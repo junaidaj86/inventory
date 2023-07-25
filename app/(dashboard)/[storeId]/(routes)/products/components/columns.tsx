@@ -14,6 +14,7 @@ export type ProductColumn = {
   createdAt: string;
   isFeatured: boolean;
   isArchived: boolean;
+  quantity: string
 }
 
 export const columns: ColumnDef<ProductColumn>[] = [
@@ -50,6 +51,10 @@ export const columns: ColumnDef<ProductColumn>[] = [
         <div className="h-6 w-6 rounded-full border" style={{ backgroundColor: row.original.color }} />
       </div>
     )
+  },
+  {
+    accessorKey: "quantity",
+    header: "quantity",
   },
   {
     accessorKey: "createdAt",
