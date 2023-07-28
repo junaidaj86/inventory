@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
-import { auth } from "@clerk/nextjs";
 
 import prismadb from "@/lib/prismadb";
-
+import { options } from '@/app/api/auth/[...nextauth]/options';
+import { getServerSession } from "next-auth/next"
 import { SettingsForm } from "./components/settings-form";
 
 const SettingsPage = async ({
@@ -10,16 +10,15 @@ const SettingsPage = async ({
 }: {
   params: { storeId: string }
 }) => {
-  const { userId } = auth();
-
-  if (!userId) {
-    redirect('/sign-in');
+  const session = await getServerSession(options);
+  if (!session) {
+    redirect('/api/auth/signin');
   }
 
   const store = await prismadb.store.findFirst({
     where: {
       id: params.storeId,
-      userId
+      userId: session.user.email,
     }
   });
 

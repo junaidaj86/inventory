@@ -140,3 +140,16 @@ model Image {
 
   @@index([productId])
 }
+
+
+model User {
+  id            String   @id @default(uuid())
+  username      String   
+  password      String    
+  email         String
+  role          String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  @@index([id])
+}
+

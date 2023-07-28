@@ -1,20 +1,21 @@
 import { NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs';
-
+import { options } from '@/app/api/auth/[...nextauth]/options';
+import { getServerSession } from "next-auth/next"
 import prismadb from '@/lib/prismadb';
+import { redirect } from 'next/navigation';
  
 export async function POST(
   req: Request,
   { params }: { params: { storeId: string } }
 ) {
   try {
-    const { userId } = auth();
+    const session = await getServerSession(options);
 
     const body = await req.json();
 
     const { label, imageUrl } = body;
 
-    if (!userId) {
+    if (!session) {
       return new NextResponse("Unauthenticated", { status: 403 });
     }
 
@@ -33,7 +34,7 @@ export async function POST(
     const storeByUserId = await prismadb.store.findFirst({
       where: {
         id: params.storeId,
-        userId,
+        userId: session.user.email,
       }
     });
 
