@@ -18,8 +18,9 @@ model Store {
   categories      Category[] @relation("StoreToCategory")
   products        Product[]  @relation("StoreToProduct")
   sizes           Size[]     @relation("StoreToSize")
-  colors          Color[]     @relation("StoreToColor")
-  orders          Order[]     @relation("StoreToOrder")
+  colors          Color[]    @relation("StoreToColor")
+  orders          Order[]    @relation("StoreToOrder")
+  suppliers       Supplier[] @relation("StoreToSupplier")
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
 }
@@ -71,6 +72,8 @@ model Product {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   quantity    Int      @default(0)
+  supplierId   String?   // Foreign Key to Supplier
+  supplier     Supplier? @relation(fields: [supplierId], references: [id])
 
   @@index([storeId])
   @@index([categoryId])
@@ -153,3 +156,12 @@ model User {
   @@index([id])
 }
 
+model Supplier {
+  id          String    @id @default(uuid())
+  name        String
+  products    Product[]
+  storeId     String    // Foreign Key to Store
+  store       Store     @relation("StoreToSupplier", fields: [storeId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}

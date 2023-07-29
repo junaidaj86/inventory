@@ -29,9 +29,9 @@ export async function DELETE(
   { params }: { params: { billboardId: string, storeId: string } }
 ) {
   try {
-    const { userId } = auth();
+    const session = await getServerSession(options);
 
-    if (!userId) {
+    if (!session) {
       return new NextResponse("Unauthenticated", { status: 403 });
     }
 
@@ -42,7 +42,7 @@ export async function DELETE(
     const storeByUserId = await prismadb.store.findFirst({
       where: {
         id: params.storeId,
-        userId,
+        userId: session.user.email,
       }
     });
 

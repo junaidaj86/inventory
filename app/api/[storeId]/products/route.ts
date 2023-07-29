@@ -14,9 +14,7 @@ export async function POST(
 
     const body = await req.json();
 
-    console.log("00000 "+ JSON.stringify(body, undefined,2))
-
-    const { name, price, categoryId, colorId, sizeId, images, isFeatured, isArchived, quantity } = body;
+    const { name, price, categoryId, colorId, sizeId, images, isFeatured, isArchived, quantity, supplierId } = body;
 
     if (!session) {
       return new NextResponse("Unauthenticated", { status: 403 });
@@ -53,6 +51,10 @@ export async function POST(
       return new NextResponse("quantity is required", { status: 400 });
     }
 
+    if (!supplierId) {
+      return new NextResponse("Supplier is required", { status: 400 });
+    }
+
     const storeByUserId = await prismadb.store.findFirst({
       where: {
         id: params.storeId,
@@ -75,6 +77,7 @@ export async function POST(
         sizeId,
         storeId: params.storeId,
         quantity,
+        supplierId,
         images: {
           createMany: {
             data: [
