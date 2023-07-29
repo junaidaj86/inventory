@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
-import { auth } from '@clerk/nextjs';
-
+import { options } from '@/app/api/auth/[...nextauth]/options';
+import { getServerSession } from "next-auth/next"
 import prismadb from '@/lib/prismadb';
 
 export default async function SetupLayout({
@@ -8,15 +8,14 @@ export default async function SetupLayout({
 }: {
   children: React.ReactNode
 }) {
-  const { userId } = auth();
-
-  if (!userId) {
-    redirect('/sign-in');
+  const session = await getServerSession(options);
+  if (!session) {
+    redirect('/api/auth/signin');
   }
 
   const store = await prismadb.store.findFirst({
     where: {
-      userId,
+      userId: session.user.email,
     }
   });
 

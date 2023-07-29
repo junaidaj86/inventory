@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import { Trash } from "lucide-react"
-import { Category, Color, Image, Product, Size } from "@prisma/client"
+import { Category, Color, Image, Product, Size, Supplier } from "@prisma/client"
 import { useParams, useRouter } from "next/navigation"
 
 import { Input } from "@/components/ui/input"
@@ -40,6 +40,7 @@ const formSchema = z.object({
   isFeatured: z.boolean().default(false).optional(),
   isArchived: z.boolean().default(false).optional(),
   quantity: z.coerce.number().min(1),
+  supplierId: z.string().min(1),
 });
 
 type ProductFormValues = z.infer<typeof formSchema>;
@@ -51,6 +52,7 @@ interface ProductFormProps {
   categories: Category[];
   colors: Color[];
   sizes: Size[];
+  suppliers: Supplier[];
 }
 
 export const ProductForm: React.FC<ProductFormProps> = ({
@@ -58,6 +60,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
   categories,
   sizes,
   colors,
+  suppliers,
 }) => {
   const params = useParams();
   const router = useRouter();
@@ -79,6 +82,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
         ...initialData,
         price: parseFloat(String(initialData?.price)),
         quantity: initialData?.quantity || 0,
+        supplierId: initialData?.supplierId || '',
       }
     : {
         name: '',
@@ -90,6 +94,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
         isFeatured: false,
         isArchived: false,
         quantity: 0,
+        supplierId: '',
       };
 
   const form = useForm<ProductFormValues>({
@@ -275,6 +280,41 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                 </FormItem>
               )}
             />
+
+<FormField
+  control={form.control}
+  name="supplierId"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Supplier</FormLabel>
+      <Select
+        disabled={loading}
+        onValueChange={field.onChange}
+        value={field.value}
+        defaultValue={field.value}
+      >
+        <FormControl>
+          <SelectTrigger>
+            <SelectValue
+              defaultValue={field.value}
+              placeholder="Select a supplier"
+            />
+          </SelectTrigger>
+        </FormControl>
+        <SelectContent>
+          {suppliers.map((supplier) => (
+            <SelectItem key={supplier.id} value={supplier.id}>
+              {supplier.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+
+
             <FormField
               control={form.control}
               name="sizeId"
@@ -312,6 +352,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="colorId"

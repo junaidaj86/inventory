@@ -1,9 +1,12 @@
 import { NextResponse } from 'next/server';
+
+import prismadb from '@/lib/prismadb';
+
 import { options } from '@/app/api/auth/[...nextauth]/options';
 import { getServerSession } from "next-auth/next"
-import prismadb from '@/lib/prismadb';
-import { redirect } from 'next/navigation';
  
+// import statements...
+
 export async function POST(
   req: Request,
   { params }: { params: { storeId: string } }
@@ -12,19 +15,16 @@ export async function POST(
     const session = await getServerSession(options);
 
     const body = await req.json();
+    console.log("adadsasd"+ JSON.stringify(body, undefined,2));
 
-    const { label, imageUrl } = body;
+    const { name } = body;
 
     if (!session) {
       return new NextResponse("Unauthenticated", { status: 403 });
     }
 
-    if (!label) {
-      return new NextResponse("Label is required", { status: 400 });
-    }
-
-    if (!imageUrl) {
-      return new NextResponse("Image URL is required", { status: 400 });
+    if (!name) {
+      return new NextResponse("Name is required", { status: 400 });
     }
 
     if (!params.storeId) {
@@ -35,27 +35,26 @@ export async function POST(
       where: {
         id: params.storeId,
         userId: session.user.email,
-      }
+      },
     });
 
     if (!storeByUserId) {
       return new NextResponse("Unauthorized", { status: 405 });
     }
 
-    const billboard = await prismadb.billboard.create({
+    const supplier = await prismadb.supplier.create({
       data: {
-        label,
-        imageUrl,
-        storeId: params.storeId,
-      }
+        name: name,
+        storeId: params.storeId, // Set the storeId field to connect the Supplier to the Store
+      },
     });
-  
-    return NextResponse.json(billboard);
+
+    return NextResponse.json(supplier);
   } catch (error) {
-    console.log('[BILLBOARDS_POST]', error);
+    console.log('[SUPPLIER_POST]', error);
     return new NextResponse("Internal error", { status: 500 });
   }
-};
+}
 
 export async function GET(
   req: Request,
@@ -66,15 +65,23 @@ export async function GET(
       return new NextResponse("Store id is required", { status: 400 });
     }
 
-    const billboards = await prismadb.billboard.findMany({
+    const storeWithSuppliers = await prismadb.store.findUnique({
       where: {
-        storeId: params.storeId
-      }
+        id: params.storeId,
+      },
+      include: {
+        suppliers: true,
+      },
     });
-  
-    return NextResponse.json(billboards);
+
+    if (!storeWithSuppliers) {
+      return new NextResponse("Store not found", { status: 404 });
+    }
+
+    return NextResponse.json(storeWithSuppliers.suppliers);
   } catch (error) {
-    console.log('[BILLBOARDS_GET]', error);
+    console.log('[SUPPLIERS_GET]', error);
     return new NextResponse("Internal error", { status: 500 });
   }
-};
+}
+
