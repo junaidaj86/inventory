@@ -22,12 +22,7 @@ export function MainNav({
       active: pathname === `/${params.storeId}`,
       role: ["admin"],
     },
-    {
-      href: `/${params.storeId}/billboards`,
-      label: 'Billboards',
-      active: pathname === `/${params.storeId}/billboards`,
-      role: ["admin"],
-    },
+
     {
       href: `/${params.storeId}/categories`,
       label: 'Categories',

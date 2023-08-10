@@ -12,9 +12,9 @@ export async function POST(
     const session = await getServerSession(options);
 
     const body = await req.json();
-
-    const { name, billboardId } = body;
-
+    
+    const { name } = body;
+    console.log("2"+ name)
     if (!session) {
       return new NextResponse("Unauthenticated", { status: 403 });
     }
@@ -22,33 +22,38 @@ export async function POST(
     if (!name) {
       return new NextResponse("Name is required", { status: 400 });
     }
-    
-    if (!billboardId) {
-      return new NextResponse("Billboard ID is required", { status: 400 });
-    }
+    console.log("3"+ session)
+    console.log("4"+ params.storeId)
 
     if (!params.storeId) {
       return new NextResponse("Store id is required", { status: 400 });
     }
+    console.log("5"+ params.storeId)
 
     const storeByUserId = await prismadb.store.findFirst({
       where: {
         id: params.storeId,
-        userId: session.user.email,
+        users: {
+          some: {
+            email: session.user.email,
+          },
+        },
       }
     });
+    console.log("6"+ params.storeId)
 
     if (!storeByUserId) {
       return new NextResponse("Unauthorized", { status: 405 });
     }
+    console.log("7"+ params.storeId)
 
     const category = await prismadb.category.create({
       data: {
         name,
-        billboardId,
         storeId: params.storeId,
       }
     });
+    console.log("8"+ params.storeId)
   
     return NextResponse.json(category);
   } catch (error) {
