@@ -15,7 +15,11 @@ export default async function SetupLayout({
 
   const store = await prismadb.store.findFirst({
     where: {
-      userId: session.user.email,
+      users: {
+        some: {
+          email: session.user.email,
+        },
+      },
     }
   });
 

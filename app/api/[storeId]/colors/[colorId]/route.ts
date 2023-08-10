@@ -45,7 +45,11 @@ export async function DELETE(
     const storeByUserId = await prismadb.store.findFirst({
       where: {
         id: params.storeId,
-        userId: session.user.email,
+        users: {
+          some: {
+            email: session.user.email,
+          },
+        },
       }
     });
 
@@ -98,7 +102,11 @@ export async function PATCH(
     const storeByUserId = await prismadb.store.findFirst({
       where: {
         id: params.storeId,
-        userId: session.user.email,
+        users: {
+          some: {
+            email: session.user.email,
+          },
+        },
       }
     });
 

@@ -13,44 +13,28 @@ datasource db {
 model Store {
   id              String    @id @default(uuid())
   name            String
-  userId          String
-  billboards      Billboard[] @relation("StoreToBillboard")
   categories      Category[] @relation("StoreToCategory")
   products        Product[]  @relation("StoreToProduct")
   sizes           Size[]     @relation("StoreToSize")
   colors          Color[]    @relation("StoreToColor")
   orders          Order[]    @relation("StoreToOrder")
   suppliers       Supplier[] @relation("StoreToSupplier")
+  users           User[] @relation("StoreToUser")
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
 }
 
-model Billboard {
-  id          String @id @default(uuid())
-  storeId     String
-  store       Store @relation("StoreToBillboard", fields: [storeId], references: [id])
-  label       String
-  imageUrl    String
-  categories  Category[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@index([storeId])
-}
 
 model Category {
   id          String      @id @default(uuid())
   storeId     String      // Foreign Key to Store
   store       Store       @relation("StoreToCategory", fields: [storeId], references: [id])
-  billboardId String      // Foreign Key to Billboard
-  billboard   Billboard   @relation(fields: [billboardId], references: [id])
   name        String
   products    Product[]   @relation("CategoryToProduct")
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 
   @@index([storeId])
-  @@index([billboardId])
 }
 
 model Product {
@@ -151,9 +135,11 @@ model User {
   password      String    
   email         String
   role          String
+  storeId       String    // Foreign Key to Store
+  store         Store     @relation("StoreToUser", fields: [storeId], references: [id])
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  @@index([id])
+  @@index([storeId])
 }
 
 model Supplier {
@@ -164,4 +150,5 @@ model Supplier {
   store       Store     @relation("StoreToSupplier", fields: [storeId], references: [id])
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  @@index([storeId])
 }

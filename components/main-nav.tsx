@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useParams, usePathname } from "next/navigation";
-
+import { useSession } from "next-auth/react";
 import { cn } from "@/lib/utils"
 
 export function MainNav({
@@ -11,54 +11,69 @@ export function MainNav({
 }: React.HTMLAttributes<HTMLElement>) {
   const pathname = usePathname();
   const params = useParams();
+  const { data: session } = useSession();
+  console.log("pppppp "+ JSON.stringify(session, undefined,2))
 
+  const isAdmin = session?.user?.role === "admin";
   const routes = [
     {
       href: `/${params.storeId}`,
       label: 'Overview',
       active: pathname === `/${params.storeId}`,
+      role: ["admin"],
     },
-    {
-      href: `/${params.storeId}/billboards`,
-      label: 'Billboards',
-      active: pathname === `/${params.storeId}/billboards`,
-    },
+
     {
       href: `/${params.storeId}/categories`,
       label: 'Categories',
       active: pathname === `/${params.storeId}/categories`,
+      role: ["admin"],
     },
     {
       href: `/${params.storeId}/sizes`,
       label: 'Sizes',
       active: pathname === `/${params.storeId}/sizes`,
+      role: ["admin"],
     },
     {
       href: `/${params.storeId}/colors`,
       label: 'Colors',
       active: pathname === `/${params.storeId}/colors`,
+      role: ["admin"],
     },
     {
       href: `/${params.storeId}/suppliers`,
       label: 'Suppliers',
       active: pathname === `/${params.storeId}/suppliers`,
+      role: ["admin"],
     },
     {
       href: `/${params.storeId}/products`,
       label: 'Products',
       active: pathname === `/${params.storeId}/products`,
+      role: [ "admin"],
     },
     {
       href: `/${params.storeId}/orders`,
       label: 'Orders',
       active: pathname === `/${params.storeId}/orders`,
+      role: ["admin"],
     },
     {
       href: `/${params.storeId}/settings`,
       label: 'Settings',
       active: pathname === `/${params.storeId}/settings`,
+      role: ["admin"],
     },
   ]
+
+  // Determine if the user has the required role for a specific route
+  const hasRequiredRole = (routeRoles: string[]) => {
+    if (!session || !session.user) {
+      return false;
+    }
+    return routeRoles.includes(session.user.role);
+  };
 
   return (
     <nav
@@ -66,6 +81,7 @@ export function MainNav({
       {...props}
     >
       {routes.map((route) => (
+        (hasRequiredRole(route.role) || !route.role) && (
         <Link
           key={route.href}
           href={route.href}
@@ -76,6 +92,7 @@ export function MainNav({
         >
           {route.label}
       </Link>
+      )
       ))}
     </nav>
   )
