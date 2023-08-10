@@ -7,6 +7,7 @@ import prismadb from "@/lib/prismadb";
 
 import { options } from '@/app/api/auth/[...nextauth]/options';
 import { getServerSession } from "next-auth/next"
+import { Signout } from "./logout";
 
 const Navbar = async () => {
   const session = await getServerSession(options);
@@ -28,7 +29,7 @@ const Navbar = async () => {
         <MainNav className="mx-6" />
         <div className="ml-auto flex items-center space-x-4">
           <ThemeToggle />
-         
+          <Signout />
         </div>
       </div>
     </div>
