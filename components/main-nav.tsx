@@ -65,6 +65,12 @@ export function MainNav({
       active: pathname === `/${params.storeId}/settings`,
       role: ["admin"],
     },
+    {
+      href: `/${params.storeId}/users`,
+      label: 'User',
+      active: pathname === `/${params.storeId}/users`,
+      role: ["admin"],
+    },
   ]
 
   // Determine if the user has the required role for a specific route
