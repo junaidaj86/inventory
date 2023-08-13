@@ -33,7 +33,7 @@ export default async function DashboardLayout({
 
   return (
     <>
-      <Navbar />
+      <Navbar params={{ storeId: params.storeId }}/>
       {children}
     </>
   );

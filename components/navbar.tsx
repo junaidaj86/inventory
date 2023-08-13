@@ -8,10 +8,16 @@ import prismadb from "@/lib/prismadb";
 import { options } from '@/app/api/auth/[...nextauth]/options';
 import { getServerSession } from "next-auth/next"
 import { Signout } from "./logout";
+import NavbarActions from "./navbar-actions";
 
-const Navbar = async () => {
+
+  const Navbar = async ({
+    params
+  }: {
+    params: { storeId: string }
+  }) => {
   const session = await getServerSession(options);
-
+console.log("ååååååå"+ JSON.stringify(params, undefined,2))
   if (!session) {
     redirect('/sign-in');
   }
@@ -33,6 +39,7 @@ const Navbar = async () => {
         <MainNav className="mx-6" />
         <div className="ml-auto flex items-center space-x-4">
           <ThemeToggle />
+          <NavbarActions params={{ storeId: params.storeId }}/>
           <Signout />
         </div>
       </div>
