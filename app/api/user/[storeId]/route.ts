@@ -14,13 +14,13 @@ export async function PATCH(
     const session = await getServerSession(options);
     const body = await req.json();
 
-    const { name } = body;
+    const { username, password, email, role } = body;
 
     if (!session) {
       return new NextResponse("Unauthenticated", { status: 403 });
     }
 
-    if (!name) {
+    if (!username) {
       return new NextResponse("Name is required", { status: 400 });
     }
 
@@ -28,17 +28,15 @@ export async function PATCH(
       return new NextResponse("Store id is required", { status: 400 });
     }
 
-    const store = await prismadb.store.updateMany({
+    const store = await prismadb.user.updateMany({
       where: {
-        id: params.storeId,
-        users: {
-          some: {
-            email: session.user.email,
-          },
-        },
+        email: session.user.email,
       },
       data: {
-        name
+        username,
+        password,
+        role,
+        email
       }
     });
   
@@ -65,14 +63,9 @@ export async function DELETE(
       return new NextResponse("Store id is required", { status: 400 });
     }
 
-    const store = await prismadb.store.deleteMany({
+    const store = await prismadb.user.deleteMany({
       where: {
-        id: params.storeId,
-        users: {
-          some: {
-            email: session.user.email,
-          },
-        },
+        email: session.user.email,
       }
     });
   

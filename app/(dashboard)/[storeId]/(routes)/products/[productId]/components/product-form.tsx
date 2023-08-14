@@ -79,23 +79,23 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 
   const defaultValues = initialData
     ? {
-        ...initialData,
-        price: parseFloat(String(initialData?.price)),
-        quantity: initialData?.quantity || 0,
-        supplierId: initialData?.supplierId || '',
-      }
+      ...initialData,
+      price: parseFloat(String(initialData?.price)),
+      quantity: initialData?.quantity || 1,
+      supplierId: initialData?.supplierId || '',
+    }
     : {
-        name: '',
-        images: [],
-        price: 0,
-        categoryId: '',
-        colorId: '',
-        sizeId: '',
-        isFeatured: false,
-        isArchived: false,
-        quantity: 0,
-        supplierId: '',
-      };
+      name: '',
+      images: [],
+      price: 0,
+      categoryId: '',
+      colorId: '',
+      sizeId: '',
+      isFeatured: false,
+      isArchived: false,
+      quantity: 1,
+      supplierId: '',
+    };
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(formSchema),
@@ -281,38 +281,38 @@ export const ProductForm: React.FC<ProductFormProps> = ({
               )}
             />
 
-<FormField
-  control={form.control}
-  name="supplierId"
-  render={({ field }) => (
-    <FormItem>
-      <FormLabel>Supplier</FormLabel>
-      <Select
-        disabled={loading}
-        onValueChange={field.onChange}
-        value={field.value}
-        defaultValue={field.value}
-      >
-        <FormControl>
-          <SelectTrigger>
-            <SelectValue
-              defaultValue={field.value}
-              placeholder="Select a supplier"
+            <FormField
+              control={form.control}
+              name="supplierId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Supplier</FormLabel>
+                  <Select
+                    disabled={loading}
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          defaultValue={field.value}
+                          placeholder="Select a supplier"
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {suppliers.map((supplier) => (
+                        <SelectItem key={supplier.id} value={supplier.id}>
+                          {supplier.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </SelectTrigger>
-        </FormControl>
-        <SelectContent>
-          {suppliers.map((supplier) => (
-            <SelectItem key={supplier.id} value={supplier.id}>
-              {supplier.name}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-      <FormMessage />
-    </FormItem>
-  )}
-/>
 
 
             <FormField
