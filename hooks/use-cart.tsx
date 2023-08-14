@@ -35,7 +35,7 @@ const useCart = create(
   increment: (id: string) => {
     set(state => ({
       items: state.items.map(item => 
-        item.id === id ? { ...item, quantityInCart: item.quantityInCart + 1 } : item
+        item.id === id ? { ...item, quantityInCart: (item.quantityInCart || 0) + 1 } : item
       )
     }));
   },

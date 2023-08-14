@@ -2,13 +2,13 @@ export interface Product {
     id: string;
     category: Category;
     name: string;
-    price: string;
+    price: number;
     isFeatured: boolean;
     size: Size;
     color: Color;
     images: Image[];
     quantity: number;
-    quantityInCart: number;
+    quantityInCart?: number;
   };
   
   export interface Image {

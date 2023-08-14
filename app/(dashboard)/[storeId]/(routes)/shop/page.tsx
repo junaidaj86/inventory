@@ -22,12 +22,18 @@ const HomePage = async ({
     },
   })
 
+  // Convert the price property to number in each product
+const productsWithPriceAsNumber = products.map(product => ({
+  ...product,
+  price: Number(product.price), // Convert Decimal to number
+}));
+
   console.log("products = "+ JSON.stringify(products, undefined, 2))
   return (
     <Container>
       <div className="space-y-10 pb-10">
         <div className="flex flex-col gap-y-8 px-4 sm:px-6 lg:px-8">
-          <ShopList title="Featured Products" storeId={params.storeId} items={products} />
+          <ShopList title="Featured Products" storeId={params.storeId} items={productsWithPriceAsNumber} />
         </div>
       </div>
     </Container>
