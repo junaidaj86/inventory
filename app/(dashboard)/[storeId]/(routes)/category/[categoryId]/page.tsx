@@ -4,9 +4,9 @@ import ProductCard from '@/components/ui/product-card';
 import NoResults from '@/components/ui/no-results';
 import prismadb from "@/lib/prismadb";
 import getProducts from "@/actions/get-products";
-import getCategory from '@/actions/get-category';
-import getSizes from '@/actions/get-sizes';
-import getColors from '@/actions/get-colors';
+// import getCategory from '@/actions/get-category';
+// import getSizes from '@/actions/get-sizes';
+// import getColors from '@/actions/get-colors';
 
 import Filter from './components/filter';
 import MobileFilters from './components/mobile-filters';
@@ -29,7 +29,7 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
 }) => {
   const products = await prismadb.product.findMany({
     where: {
-      storeId: params.storeId
+      storeId: ""
     },
     include: {
       category: true,
@@ -38,9 +38,9 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
       images: true,
     },
   })
-  const sizes = await getSizes();
-  const colors = await getColors();
-  const category = await getCategory(params.categoryId);
+  // const sizes = await getSizes();
+  // const colors = await getColors();
+  // const category = await getCategory(params.categoryId);
 
   return (
     <div className="bg-white">
@@ -48,7 +48,7 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
         
         <div className="px-4 sm:px-6 lg:px-8 pb-24">
           <div className="lg:grid lg:grid-cols-5 lg:gap-x-8">
-            <MobileFilters sizes={sizes} colors={colors} />
+            {/* <MobileFilters sizes={sizes} colors={colors} />
             <div className="hidden lg:block">
               <Filter
                 valueKey="sizeId" 
@@ -68,7 +68,7 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
                   <ProductCard key={item.id} data={item} />
                 ))}
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </Container>
