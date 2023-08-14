@@ -6,7 +6,9 @@ export interface Product {
     isFeatured: boolean;
     size: Size;
     color: Color;
-    images: Image[]
+    images: Image[];
+    quantity: number;
+    quantityInCart: number;
   };
   
   export interface Image {

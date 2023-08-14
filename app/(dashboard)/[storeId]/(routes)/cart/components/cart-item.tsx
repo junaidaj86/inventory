@@ -6,6 +6,7 @@ import IconButton from "@/components/ui/icon-button";
 import Currency from "@/components/ui/currency";
 import useCart from "@/hooks/use-cart";
 import { Product } from "@/types";
+import QuantitySelector from "@/components/ui/QuantitySelector";
 
 
 interface CartItemProps {
@@ -21,6 +22,9 @@ const CartItem: React.FC<CartItemProps> = ({
   const onRemove = () => {
     cart.removeItem(data.id);
   };
+  const handleIncrement = () => {
+    cart.increment(data.id);
+  };
 
   return ( 
     <li className="flex py-6 border-b">
@@ -33,8 +37,12 @@ const CartItem: React.FC<CartItemProps> = ({
         />
       </div>
       <div className="relative ml-4 flex flex-1 flex-col justify-between sm:ml-6">
-        <div className="absolute z-10 right-0 top-0">
-          <IconButton onClick={onRemove} icon={<X size={15} />} />
+      <div className="absolute z-10 right-0 top-0">
+          <QuantitySelector
+            quantity={ data?.quantityInCart || 1} // Assuming you have a "quantity" property in your data object
+            onIncrement={handleIncrement}
+            onDecrement={onRemove}
+          />
         </div>
         <div className="relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0">
           <div className="flex justify-between">

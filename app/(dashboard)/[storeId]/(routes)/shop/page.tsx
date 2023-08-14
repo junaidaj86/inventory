@@ -1,5 +1,4 @@
 
-import ProductList from "@/components/product-list";
 import ShopList from "@/components/shop-list";
 import Container from "@/components/ui/container";
 import prismadb from "@/lib/prismadb";

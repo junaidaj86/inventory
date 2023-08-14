@@ -18,19 +18,22 @@ export async function POST(
   req: Request,
   { params }: { params: { storeId: string } }
 ) {
-  const { productIds } = await req.json();
+  const orderItems  = await req.json();
+  console.log("hhhhh"+ JSON.stringify(orderItems, undefined, 2))
 
-  if (!productIds || productIds.length === 0) {
+  if (!orderItems || orderItems.length === 0) {
     return new NextResponse("Product ids are required", { status: 400 });
   }
 
-  const products = await prismadb.product.findMany({
-    where: {
-      id: {
-        in: productIds
-      }
-    }
-  });
+ 
+
+  // const products = await prismadb.product.findMany({
+  //   where: {
+  //     id: {
+  //       in: productIds
+  //     }
+  //   }
+  // });
 
   // const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
 
@@ -47,22 +50,22 @@ export async function POST(
   //   });
   // });
 
-  const order = await prismadb.order.create({
-    data: {
-      storeId: params.storeId,
-      isPaid: false,
-      orderItems: {
-        create: productIds.map((productId: string) => ({
-          product: {
-            connect: {
-              id: productId
-            }
-          },
-          quantity: 1
-        }))
-      }
-    }
-  });
+  // const order = await prismadb.order.create({
+  //   data: {
+  //     storeId: params.storeId,
+  //     isPaid: false,
+  //     orderItems: {
+  //       create: orderItems.map((productId: string) => ({
+  //         product: {
+  //           connect: {
+  //             id: productId
+  //           }
+  //         },
+  //         quantity: 1
+  //       }))
+  //     }
+  //   }
+  // });
 
   // const session = await stripe.checkout.sessions.create({
   //   line_items,
@@ -78,7 +81,71 @@ export async function POST(
   //   },
   // });
 
-  return NextResponse.json({ url: "success"}, {
-    headers: corsHeaders
-  });
+  // return NextResponse.json({ url: "success"}, {
+  //   headers: corsHeaders
+  // });
+
+
+
+
+  try {
+    // Prepare the array of operations for the transaction
+    const transactionOperations = [];
+
+    for (const orderItem of orderItems) {
+      const { id, quantityInCart } = orderItem;
+
+      // Fetch the product by ID
+      const product = await prismadb.product.findUnique({
+        where: { id }
+      });
+
+      if (!product) {
+        return new NextResponse(`Product with ID ${id} not found`, { status: 404 });
+      }
+
+      if (product.quantity < quantityInCart) {
+        return new NextResponse(`Insufficient stock for product with ID ${id}`, { status: 400 });
+      }
+
+      // Add operation to update product quantity
+      transactionOperations.push(
+        prismadb.product.update({
+          where: { id },
+          data: { quantity: product.quantity - quantityInCart }
+        })
+      );
+    }
+
+    // Add operation to create the order
+    transactionOperations.push(
+      prismadb.order.create({
+        data: {
+          storeId: params.storeId,
+          isPaid: false,
+          orderItems: {
+            create: orderItems.map((orderItem: any) => ({
+              product: {
+                connect: {
+                  id: orderItem.id
+                }
+              },
+              quantity: orderItem.quantityInCart
+            }))
+          }
+        }
+      })
+    );
+
+    // Execute the transaction
+    await prismadb.$transaction(transactionOperations);
+
+    // Respond with success
+    return NextResponse.json({ url: "success" }, {
+      headers: corsHeaders
+    });
+  } catch (error) {
+    console.error(error);
+    return new NextResponse("Error creating order", { status: 500 });
+  }
 };
