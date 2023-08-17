@@ -1,13 +1,16 @@
 "use client";
 
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 
 import {Button} from "@/components/ui/button";
 import Currency from "@/components/ui/currency";
 import useCart from "@/hooks/use-cart";
 import { toast } from "react-hot-toast";
+
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 const Summary = async ({
   params
@@ -17,17 +20,9 @@ const Summary = async ({
   const searchParams = useSearchParams();
   const items = useCart((state) => state.items);
   const removeAll = useCart((state) => state.removeAll);
+  const summaryRef = useRef(null);
 
-  useEffect(() => {
-    if (searchParams.get('success')) {
-      toast.success('Payment completed.');
-      removeAll();
-    }
 
-    if (searchParams.get('canceled')) {
-      toast.error('Something went wrong.');
-    }
-  }, [searchParams, removeAll]);
 
   const totalPrice = items.reduce((total, item) => {
     return total + Number(item.price)
@@ -36,7 +31,24 @@ const Summary = async ({
   const onCheckout = async () => {
     const response = await axios.post(`/api/${params.storeId}/checkout`, items);
 
-    window.location = response.data.url;
+    if (response.status === 200) {
+      toast.success('Payment completed.');
+      removeAll();
+  
+      // Generate the invoice in PDF format
+      if (summaryRef.current) {
+        const canvas = await html2canvas(summaryRef.current);
+        const imgData = canvas.toDataURL("image/png");
+  
+        const pdf = new jsPDF();
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        
+        pdf.addImage(imgData, "PNG", 10, 10, pdfWidth - 20, pdfHeight);
+        pdf.save("invoice.pdf");
+      }
+    }
   }
 
   return ( 
@@ -46,7 +58,7 @@ const Summary = async ({
       <h2 className="text-lg font-medium text-gray-900">
         Order summary
       </h2>
-      <div className="mt-6 space-y-4">
+      <div ref={summaryRef} className="mt-6 space-y-4">
         <div className="flex items-center justify-between border-t border-gray-200 pt-4">
           <div className="text-base font-medium text-gray-900">Order total</div>
          <Currency value={totalPrice} />

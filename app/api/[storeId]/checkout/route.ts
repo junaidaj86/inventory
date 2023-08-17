@@ -141,9 +141,7 @@ export async function POST(
     await prismadb.$transaction(transactionOperations);
 
     // Respond with success
-    return NextResponse.json({ url: "success" }, {
-      headers: corsHeaders
-    });
+    return new NextResponse("Successfully created order", { status: 200 });
   } catch (error) {
     console.error(error);
     return new NextResponse("Error creating order", { status: 500 });
