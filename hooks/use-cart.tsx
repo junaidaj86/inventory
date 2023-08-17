@@ -11,6 +11,7 @@ interface CartStore {
   removeItem: (id: string) => void;
   removeAll: () => void;
   increment: (id: string) => void;
+  decrement: (id: string) => void;
 }
 
 const useCart = create(
@@ -36,6 +37,15 @@ const useCart = create(
     set(state => ({
       items: state.items.map(item => 
         item.id === id ? { ...item, quantityInCart: (item.quantityInCart || 0) + 1 } : item
+      )
+    }));
+  },
+  decrement: (id: string) => {
+    set(state => ({
+      items: state.items.filter(item => 
+        item.id === id 
+          ? item.quantityInCart !== undefined && item.quantityInCart > 1
+          : true
       )
     }));
   },

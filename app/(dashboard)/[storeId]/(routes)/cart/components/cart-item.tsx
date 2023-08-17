@@ -20,7 +20,7 @@ const CartItem: React.FC<CartItemProps> = ({
   const cart = useCart();
 
   const onRemove = () => {
-    cart.removeItem(data.id);
+    cart.decrement(data.id);
   };
   const handleIncrement = () => {
     cart.increment(data.id);

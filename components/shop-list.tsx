@@ -20,7 +20,13 @@ const ShopList: React.FC<ProductListProps> = ({
       {items.length === 0 && <NoResults />}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {items.map((item) => (
-          <ShopCard storeId={storeId} key={item.id} data={item} />
+          <ShopCard
+          storeId={storeId}
+          key={item.id}
+          data={item}
+          disabled={item.quantity === 0} // Disable card if quantity is 0
+          soldOut={item.quantity === 0}   // Label as "Sold Out" if quantity is 0
+        />
         ))}
       </div>
     </div>
