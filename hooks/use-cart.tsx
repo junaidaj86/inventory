@@ -41,14 +41,22 @@ const useCart = create(
     }));
   },
   decrement: (id: string) => {
-    set(state => ({
-      items: state.items.filter(item => 
-        item.id === id 
-          ? item.quantityInCart !== undefined && item.quantityInCart > 1
-          : true
-      )
-    }));
+    set((state) => {
+      const updatedItems = state.items.map((item) => {
+        if (item.id === id) {
+          const newQuantity = item.quantityInCart ? item.quantityInCart - 1 : 0;
+        if (newQuantity > 0) {
+          return { ...item, quantityInCart: newQuantity };
+        }
+        return null; // Mark for removal
+        }
+        return item;
+      });
+  
+      return { items: updatedItems.filter((item) => item !== null) } as CartStore;
+    });
   },
+  
 }), {
   name: 'cart-storage',
   storage: createJSONStorage(() => localStorage)
