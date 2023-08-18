@@ -24,7 +24,7 @@ const QuantitySelector: React.FC<QuantitySelectorProps> = ({
       >
         <Minus size={15} /> {/* Use the Minus icon */}
       </button>
-      <span className="px-4 text-black">{quantity}</span>
+      <span className="px-4 text-white-900">{quantity}</span>
       <button
         onClick={onIncrement}
         className=" text-black rounded-r-full flex items-center justify-center bg-white border shadow-md p-2 hover:scale-110 transition"

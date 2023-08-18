@@ -17,7 +17,6 @@ import NavbarActions from "./navbar-actions";
     params: { storeId: string }
   }) => {
   const session = await getServerSession(options);
-console.log("ååååååå"+ JSON.stringify(params, undefined,2))
   if (!session) {
     redirect('/sign-in');
   }

@@ -40,7 +40,7 @@ const CartPage = async ({
                 ))}
               </ul>
             </div>
-            <Summary params={{ storeId: params.storeId }}/>
+            <Summary params={{ storeId: params.storeId }} data={cart.items}/>
           </div>
         </div>
       </Container>

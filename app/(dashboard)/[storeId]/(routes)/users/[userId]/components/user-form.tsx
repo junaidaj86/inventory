@@ -67,9 +67,7 @@ export const UserForm: React.FC<UserFormProps> = ({
   const onSubmit = async (data: UserFormValues) => {
     try {
       setLoading(true);
-      console.log("++++++++" + JSON.stringify(data, undefined, 2))
       data.storeId = params.storeId;
-      console.log("++++++++" + JSON.stringify(data, undefined, 2))
       if (initialData) {
         await axios.patch(`/api/user/${params.userId}`, data);
       } else {

@@ -39,7 +39,7 @@ const CartItem: React.FC<CartItemProps> = ({
       <div className="relative ml-4 flex flex-1 flex-col justify-between sm:ml-6">
       <div className="absolute z-10 right-0 top-0">
           <QuantitySelector
-            quantity={ data?.quantityInCart || 1} // Assuming you have a "quantity" property in your data object
+            quantity={ data?.quantityInCart || 1} 
             onIncrement={handleIncrement}
             onDecrement={onRemove}
           />
@@ -51,10 +51,10 @@ const CartItem: React.FC<CartItemProps> = ({
             </p>
           </div>
 
-          <div className="mt-1 flex text-sm">
-            <p className="text-gray-500">{data.color.name}</p>
-            <p className="ml-4 border-l border-gray-200 pl-4 text-gray-500">{data.size.name}</p>
-          </div>
+          {/* <div className="mt-1 flex text-sm">
+            <p className="text-white-500">{data.color.name}</p>
+            <p className="ml-4 border-l border-gray-200 pl-4 text-white-500">{data.size.name}</p>
+          </div> */}
           <Currency value={data.price} />
         </div>
       </div>

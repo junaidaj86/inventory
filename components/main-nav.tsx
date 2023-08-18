@@ -12,14 +12,14 @@ export function MainNav({
   const pathname = usePathname();
   const params = useParams();
   const { data: session } = useSession();
-
+  console.log("adsad"+ JSON.stringify(session, undefined,2))
   const isAdmin = session?.user?.role === "admin";
   const routes = [
     {
       href: `/${params.storeId}`,
       label: 'Overview',
       active: pathname === `/${params.storeId}`,
-      role: ["admin"],
+      role: ["admin", "owner"],
     },
 
     {
@@ -74,7 +74,7 @@ export function MainNav({
       href: `/${params.storeId}/shop`,
       label: 'Shop',
       active: pathname === `/${params.storeId}/shop`,
-      role: ["admin"],
+      role: ["admin", "user"],
     },
   ]
 
