@@ -33,11 +33,11 @@ export const CellAction: React.FC<CellActionProps> = ({
   const onConfirm = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/${params.storeId}/user/${data.id}`);
-      toast.success('Color deleted.');
+      await axios.delete(`/api/user/${data.id}`);
+      toast.success('User deleted.');
       router.refresh();
     } catch (error) {
-      toast.error('Make sure you removed all products using this color first.');
+      toast.error('Make sure you removed all products using this user first.');
     } finally {
       setOpen(false);
       setLoading(false);
