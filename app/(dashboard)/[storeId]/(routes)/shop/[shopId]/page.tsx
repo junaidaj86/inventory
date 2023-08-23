@@ -11,13 +11,16 @@ interface ProductPageProps {
   },
 }
 
-const ProductPage: React.FC<ProductPageProps> = async ({ 
+const ProductPage = async ({
   params
- }) => {
+}: {
+  params: { storeId: string, shopId: string }
+}) => {
+
   //const product = await getProduct(params.productId);
     const product = await prismadb.product.findFirst({
       where: {
-        id: params.productId
+        id: params.shopId
       },
       include: {
         category: true,
