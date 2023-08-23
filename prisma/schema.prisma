@@ -54,6 +54,7 @@ model Product {
   images      Image[]   // Relation to Image model
   orderItems  OrderItem[]   // Relation to Order model
   createdAt   DateTime  @default(now())
+  isDeleted   Boolean   @default(false)
   updatedAt   DateTime  @updatedAt
   quantity    Int      @default(0)
   supplierId   String?   // Foreign Key to Supplier

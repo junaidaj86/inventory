@@ -63,13 +63,22 @@ export async function DELETE(
       return new NextResponse("Unauthorized", { status: 405 });
     }
 
-    const product = await prismadb.product.delete({
+    // const product = await prismadb.product.delete({
+    //   where: {
+    //     id: params.productId
+    //   },
+    // });
+
+    const deletedProduct = await prismadb.product.update({
       where: {
-        id: params.productId
+        id: params.productId,
+      },
+      data: {
+        isDeleted: true,
       },
     });
   
-    return NextResponse.json(product);
+    return NextResponse.json(deletedProduct);
   } catch (error) {
     console.log('[PRODUCT_DELETE]', error);
     return new NextResponse("Internal error", { status: 500 });
