@@ -12,7 +12,6 @@ export function MainNav({
   const pathname = usePathname();
   const params = useParams();
   const { data: session } = useSession();
-  console.log("adsad"+ JSON.stringify(session, undefined,2))
   const isAdmin = session?.user?.role === "admin";
   const routes = [
     {
