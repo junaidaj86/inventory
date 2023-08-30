@@ -37,7 +37,8 @@ export async function POST(
     }
 
     if (!colorId) {
-      return new NextResponse("Color id is required", { status: 400 });
+      // I have made clor optional
+      //return new NextResponse("Color id is required", { status: 400 });
     }
 
     if (!sizeId) {

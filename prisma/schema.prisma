@@ -50,7 +50,7 @@ model Product {
   sizeId      String    // Foreign Key to Size
   size        Size      @relation(fields: [sizeId], references: [id])
   colorId     String    // Foreign Key to Color
-  color       Color     @relation(fields: [colorId], references: [id])
+  color       Color?     @relation(fields: [colorId], references: [id])
   images      Image[]   // Relation to Image model
   orderItems  OrderItem[]   // Relation to Order model
   createdAt   DateTime  @default(now())
