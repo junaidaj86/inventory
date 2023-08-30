@@ -5,7 +5,7 @@ export interface Product {
     price: number;
     isFeatured: boolean;
     size: Size;
-    color: Color;
+    color: Color | null;
     images: Image[];
     quantity: number;
     quantityInCart?: number;

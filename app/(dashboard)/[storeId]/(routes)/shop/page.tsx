@@ -2,6 +2,7 @@
 import ShopList from "@/components/shop-list";
 import Container from "@/components/ui/container";
 import prismadb from "@/lib/prismadb";
+import { Color } from "@/types";
 export const revalidate = 0;
 
 
@@ -28,6 +29,8 @@ const productsWithPriceAsNumber = products.map(product => ({
   ...product,
   price: Number(product.price), // Convert Decimal to number
 }));
+
+
 
   console.log("products = "+ JSON.stringify(products, undefined, 2))
   return (

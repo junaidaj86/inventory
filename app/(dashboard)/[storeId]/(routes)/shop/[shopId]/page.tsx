@@ -2,6 +2,7 @@ import Gallery from '@/components/gallery';
 import Info from '@/components/info';
 import Container from '@/components/ui/container';
 import prismadb from "@/lib/prismadb";
+import { Color } from '@/types';
 
 export const revalidate = 0;
 
@@ -41,6 +42,17 @@ const ProductPage = async ({
     price: Number(product.price),
   };
 
+  
+
+  // Handle cases where color might be null
+  const defaultColor: Color = {
+    id: 'defaultId',
+    name: 'No Color',
+    value: '#000000',
+  };
+
+  const colorObject: Color = product.color || defaultColor;
+
   return (
     <div className="bg-white">
       <Container>
@@ -48,7 +60,7 @@ const ProductPage = async ({
           <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
             <Gallery images={product.images} />
             <div className="mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0">
-              <Info data={productWithPriceAsNumber} />
+              <Info data={{ ...productWithPriceAsNumber, color: colorObject }} />
             </div>
           </div>
           <hr className="my-10" />
