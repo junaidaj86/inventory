@@ -123,7 +123,7 @@ export async function PATCH(
     }
 
     if (!colorId) {
-      return new NextResponse("Color id is required", { status: 400 });
+     
     }
 
     if (!sizeId) {
