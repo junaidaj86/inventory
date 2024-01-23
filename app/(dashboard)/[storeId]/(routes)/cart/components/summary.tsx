@@ -12,14 +12,17 @@ import { toast } from "react-hot-toast";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { Product } from "@/types";
+import ReactToPrint from "react-to-print";
 
 
 const Summary = async ({
   params,
-  data
+  data,
+  ref // Add ref as a prop
 }: {
   params: { storeId: string },
   data: Product[];
+  ref: React.RefObject<HTMLDivElement>; // Define ref as a prop
 }) => {
   const searchParams = useSearchParams();
   const items = useCart((state) => state.items);
@@ -92,9 +95,17 @@ const Summary = async ({
           <Currency value={totalPrice} />
         </div>
       </div>
-      <Button onClick={onCheckout} disabled={items.length === 0} className="w-full mt-6">
-        Checkout
-      </Button>
+
+      <ReactToPrint
+        bodyClass="print-agreement"
+        content={() => summaryRef.current}
+        trigger={() => (
+          <Button onClick={onCheckout} disabled={items.length === 0} className="w-full mt-6">
+          Checkout
+        </Button>
+         )}
+       />
+      
     </div>
   );
 }
