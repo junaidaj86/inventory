@@ -11,6 +11,7 @@ export async function POST(request: Request){
     const body = await request.json();
     console.log("register = "+ await  bcrypt.hash(body.password, 10));
     if(body?.username != null && body?.password != null && body?.email != null){
+        console.log("inside = " + JSON.stringify(body, undefined,2));
         const user = await  prismadb.user.create({
             data:{
                 username: body.username,

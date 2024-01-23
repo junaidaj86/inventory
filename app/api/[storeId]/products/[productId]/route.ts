@@ -110,9 +110,9 @@ export async function PATCH(
       return new NextResponse("Name is required", { status: 400 });
     }
 
-    if (!images || !images.length) {
-      return new NextResponse("Images are required", { status: 400 });
-    }
+    // if (!images || !images.length) {
+    //   return new NextResponse("Images are required", { status: 400 });
+    // }
 
     if (!price) {
       return new NextResponse("Price is required", { status: 400 });

@@ -8,15 +8,12 @@ import useCart from "@/hooks/use-cart";
 import { Product } from "@/types";
 import QuantitySelector from "@/components/ui/QuantitySelector";
 
-
 interface CartItemProps {
   data: Product;
   storeId: string;
 }
 
-const CartItem: React.FC<CartItemProps> = ({
-  data, storeId
-}) => {
+const CartItem: React.FC<CartItemProps> = ({ data, storeId }) => {
   const cart = useCart();
 
   const onRemove = () => {
@@ -26,29 +23,33 @@ const CartItem: React.FC<CartItemProps> = ({
     cart.increment(data.id);
   };
 
-  return ( 
+  return (
     <li className="flex py-6 border-b">
-      <div className="relative h-24 w-24 rounded-md overflow-hidden sm:h-48 sm:w-48">
-        <Image
-          fill
-          src={data.images[0].url}
-          alt=""
-          className="object-cover object-center"
-        />
+      <div className="flex flex-col gap-2">
+        {data.images && data.images.length > 0 && (
+          <div className="relative h-24 w-24 rounded-md overflow-hidden sm:h-24 sm:w-24">
+            <Image
+              fill
+              src={data.images[0].url}
+              alt=""
+              className="object-cover object-center"
+            />
+          </div>
+        )}
+        <div className="text-lg font-semibold">{data.name}</div>
       </div>
+
       <div className="relative ml-4 flex flex-1 flex-col justify-between sm:ml-6">
-      <div className="absolute z-10 right-0 top-0">
+        <div className="absolute z-10 right-0 top-0">
           <QuantitySelector
-            quantity={ data?.quantityInCart || 1} 
+            quantity={data?.quantityInCart || 1}
             onIncrement={handleIncrement}
             onDecrement={onRemove}
           />
         </div>
         <div className="relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0">
           <div className="flex justify-between">
-            <p className=" text-lg font-semibold text-black">
-              {data.name}
-            </p>
+            <p className=" text-lg font-semibold text-black">{data.name}</p>
           </div>
 
           {/* <div className="mt-1 flex text-sm">
@@ -60,6 +61,6 @@ const CartItem: React.FC<CartItemProps> = ({
       </div>
     </li>
   );
-}
- 
+};
+
 export default CartItem;

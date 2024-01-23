@@ -89,7 +89,7 @@ const ShopCard: React.FC<ProductCardProps> = ({
         <p className="text-sm text-gray-500">Price: {data.price}</p>
       </div>
       {/* Price & Reiew */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between ">
         <Currency value={data?.price} />
       </div>
     </div>

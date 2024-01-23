@@ -2,23 +2,23 @@
 
 import { ShoppingCart } from "lucide-react";
 
-import Currency  from "@/components/ui/currency";
-import {Button} from "@/components/ui/button";
+import Currency from "@/components/ui/currency";
+import { Button } from "@/components/ui/button";
 import { Product } from "@/types";
 import useCart from "@/hooks/use-cart";
 
 interface InfoProps {
-  data: Product
-};
+  data: Product;
+}
 
 const Info: React.FC<InfoProps> = ({ data }) => {
   const cart = useCart();
 
   const onAddToCart = () => {
     cart.addItem(data);
-  }
+  };
 
-  return ( 
+  return (
     <div>
       <h1 className="text-3xl font-bold text-gray-900">{data.name}</h1>
       <div className="mt-3 flex items-end justify-between">
@@ -30,14 +30,25 @@ const Info: React.FC<InfoProps> = ({ data }) => {
       <div className="flex flex-col gap-y-6">
         <div className="flex items-center gap-x-4">
           <h3 className="font-semibold text-black">Size:</h3>
-          <div>
-            {data?.size?.value}
-          </div>
+          <div className="text-black">{data?.size?.value}</div>
         </div>
         <div className="flex items-center gap-x-4">
           <h3 className="font-semibold text-black">Color:</h3>
-          <div className="h-6 w-6 rounded-full border border-gray-600" style={{ backgroundColor: data?.color?.value }} />
+          <div
+            className="h-6 w-6 rounded-full border border-gray-600"
+            style={{ backgroundColor: data?.color?.value }}
+          />
         </div>
+      </div>
+      <div className="mt-4 text-gray-700">
+        <h3 className="font-semibold text-black">Description:</h3>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat.
+        </p>
+        {/* Add your product description here */}
       </div>
       <div className="mt-10 flex items-center gap-x-3">
         <Button onClick={onAddToCart} className="flex items-center gap-x-2">
@@ -47,6 +58,6 @@ const Info: React.FC<InfoProps> = ({ data }) => {
       </div>
     </div>
   );
-}
- 
+};
+
 export default Info;
