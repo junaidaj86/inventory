@@ -17,7 +17,7 @@ const CartPage = async ({
 }) => {
   const [isMounted, setIsMounted] = useState(false);
   const cart = useCart();
-  const ref = useRef<HTMLDivElement>(null);
+  const printRef = useRef(null);
 
   useEffect(() => {
     setIsMounted(true);
@@ -30,7 +30,7 @@ const CartPage = async ({
   return (
     <div >
       <Container>
-        <div className="px-4 py-16 sm:px-6 lg:px-8"  ref={ref}>
+        <div className="px-4 py-16 sm:px-6 lg:px-8"  ref={printRef}>
           <h1 className="text-3xl font-bold text-black">Shopping Cart</h1>
           <div className="mt-12 lg:grid lg:grid-cols-12 lg:items-start gap-x-12">
             <div className="lg:col-span-7">
@@ -41,7 +41,7 @@ const CartPage = async ({
                 ))}
               </ul>
             </div>
-            <Summary params={{ storeId: params.storeId }} data={cart.items} ref={ref}/>
+            <Summary params={{ storeId: params.storeId }} data={cart.items} printRef={printRef}/>
           </div>
         </div>
       </Container>
