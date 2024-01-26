@@ -7,19 +7,7 @@ import GitHubProvider from 'next-auth/providers/github'
 import * as bcrypt from 'bcrypt';
 
 export const options: NextAuthOptions = {
-  providers: [GitHubProvider({
-    profile(profile: GithubProfile) {
-        //console.log("prodile ="+JSON.stringify(profile, undefined,2))
-        return {
-            ...profile,
-            role: profile.role ?? "user",
-            id: profile.id.toString(),
-            image: profile.avatar_url,
-        }
-    },
-    clientId: process.env.GITHUB_ID as string,
-    clientSecret: process.env.GITHUB_SECRET as string,
-}),
+  providers: [
     CredentialsProvider({
       // The name to display on the sign in form (e.g. 'Sign in with...')
       name: 'Credentials',

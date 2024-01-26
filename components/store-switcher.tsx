@@ -90,7 +90,7 @@ export default function StoreSwitcher({ className, items = [] }: StoreSwitcherPr
             </CommandGroup>
           </CommandList>
           <CommandSeparator />
-          <CommandList>
+          {/* <CommandList>
             <CommandGroup>
               <CommandItem
                 onSelect={() => {
@@ -102,7 +102,7 @@ export default function StoreSwitcher({ className, items = [] }: StoreSwitcherPr
                 Create Store
               </CommandItem>
             </CommandGroup>
-          </CommandList>
+          </CommandList> */}
         </Command>
       </PopoverContent>
     </Popover>
