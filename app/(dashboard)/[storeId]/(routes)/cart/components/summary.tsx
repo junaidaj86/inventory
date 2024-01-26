@@ -1,8 +1,7 @@
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { FaTag } from "react-icons/fa"; // Import the discount icon
-
+import { FaTag } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import Currency from "@/components/ui/currency";
 import useCart from "@/hooks/use-cart";
@@ -12,16 +11,13 @@ import { Product } from "@/types";
 const Summary = ({
   params,
   data,
-  printRef,
 }: {
   params: { storeId: string };
   data: Product[];
-  printRef: React.RefObject<HTMLDivElement>;
 }) => {
   const searchParams = useSearchParams();
   const items = useCart((state) => state.items);
   const removeAll = useCart((state) => state.removeAll);
-  const summaryRef = useRef(null);
   const [itemDiscounts, setItemDiscounts] = useState<{ [key: string]: number }>(
     {}
   );
@@ -83,6 +79,7 @@ const Summary = ({
     if (response.status === 200) {
       toast.success("Transaction completed.");
       removeAll();
+      window.location.reload();
     }
   };
 
@@ -92,7 +89,7 @@ const Summary = ({
       id="printableArea"
     >
       <h2 className="text-lg font-medium text-white-900">Order summary</h2>
-      <div ref={summaryRef} className="mt-6 space-y-4">
+      <div  className="mt-6 space-y-4">
         {data.map((product) => (
           <div
             key={product.id}

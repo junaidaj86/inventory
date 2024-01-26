@@ -33,10 +33,11 @@ const CartItem: React.FC<CartItemProps> = ({ data, storeId }) => {
               src={data.images[0].url}
               alt=""
               className="object-cover object-center"
+              priority={true}
             />
           </div>
         )}
-        <div className="text-lg font-semibold">{data.name}</div>
+        <div className="text-base font-semibold">{data.name}</div>
       </div>
 
       <div className="relative ml-4 flex flex-1 flex-col justify-between sm:ml-6">

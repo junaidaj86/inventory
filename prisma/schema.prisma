@@ -13,6 +13,8 @@ datasource db {
 model Store {
   id              String    @id @default(uuid())
   name            String
+  GST             String?   
+  address         String?   
   categories      Category[] @relation("StoreToCategory")
   products        Product[]  @relation("StoreToProduct")
   sizes           Size[]     @relation("StoreToSize")
@@ -134,7 +136,7 @@ model User {
   id            String   @id @default(uuid())
   username      String   
   password      String    
-  email         String
+  email         String   @unique
   role          String
   storeId       String    // Foreign Key to Store
   store         Store     @relation("StoreToUser", fields: [storeId], references: [id])

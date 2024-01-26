@@ -63,7 +63,7 @@ const ShopList: React.FC<ProductListProps> = async ({
             </div>
             <div className="mt-6 lg:col-span-4 lg:mt-0">
               {filteredItems.length === 0 && <NoResults />}
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
               {filteredItems.map((item) => (
                 <ShopCard
                 storeId={storeId}

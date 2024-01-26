@@ -34,3 +34,11 @@ export interface Product {
     name: string;
     value: string;
   };
+
+
+  export interface Store {
+    id: string;
+    name: string;
+    GST?: string | null;
+    address?: string | null;
+  };
