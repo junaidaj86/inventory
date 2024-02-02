@@ -34,6 +34,9 @@ export const options: NextAuthOptions = {
       }
     })
   ],
+  pages: {
+    signIn: "/auth/signin",
+  },
   //refer to next-auth.d.ts file in parent hirecy of this app, here we had to define some next auth interface
   callbacks:{
     //https://authjs.dev/guides/basics/role-based-access-control
