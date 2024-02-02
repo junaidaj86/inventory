@@ -3,12 +3,12 @@ import { FormEvent, useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+import { toast } from "react-hot-toast"
 
 export default function LoginPage() {
     const router = useRouter();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState<string | null>(null);
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -16,12 +16,10 @@ export default function LoginPage() {
         try {
             // Basic validation
             if (!username || !password) {
-                setError('Please enter both username and password.');
+                toast.error('Please enter both username and password.');
                 return;
             }
 
-            // Clear previous error
-            setError(null);
 
             // Attempt to sign in
             const result = await signIn('credentials', {
@@ -35,12 +33,12 @@ export default function LoginPage() {
                 // Redirect to the desired page after successful login
                 router.push('/'); // Replace with your desired route
             } else {
-                setError('Invalid username or password.');
+                toast.error('Invalid username or password.');
             }
         } catch (error) {
             // Handle other unexpected errors
-            setError('Something went wrong. Please try again.');
             console.error(error);
+            toast.error('Something went wrong.');
         }
     };
 
@@ -81,7 +79,6 @@ export default function LoginPage() {
                   autoComplete="email"
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder='enter your email address'
-                  required
                   className="block w-full rounded-md border-0 p-1.5 text-white shadow-sm ring-1 ring-inset ring-gray-200 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-white sm:text-sm sm:leading-6"
                 />
               </div>
@@ -106,12 +103,10 @@ export default function LoginPage() {
                   autoComplete="current-password"
                   placeholder='enter your password'
                   onChange={(e) => setPassword(e.target.value)}
-                  required
                   className="block w-full rounded-md border-0 p-1.5 text-white shadow-sm ring-1 ring-inset ring-gray-200 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-white sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
-
             <div className='flex justify-center'>
               <Button
                 type="submit"
