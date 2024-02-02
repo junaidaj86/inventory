@@ -2,6 +2,7 @@
 import { FormEvent, useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
 
 export default function LoginPage() {
     const router = useRouter();
@@ -44,50 +45,85 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="bg-gray-900 text-white p-8 max-w-md mx-auto mt-20 rounded-md shadow-md flex flex-col justify-center">
-          <form onSubmit={handleSubmit} >
-            <div className="mb-4">
-              <label
-                htmlFor="username"
-                className="block text-sm font-medium text-gray-300"
-              >
-                Username:
+         
+          <>
+      {/*
+        This example requires updating your template:
+
+        ```
+        <html class="h-full bg-white">
+        <body class="h-full">
+        ```
+      */}
+      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+          <img
+            className="mx-auto h-12 w-auto"
+            src="/ims-logo.png"
+            alt="Your Company"
+          />
+          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-500">
+            Sign in to your account
+          </h2>
+        </div>
+
+        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+          <form className="space-y-6" action="#" method="POST" onSubmit={handleSubmit} >
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-500">
+                Email address
               </label>
-              <input
-                type="text"
-                id="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="mt-1 p-2 w-full bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-              />
+              <div className="mt-2">
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder='enter your email address'
+                  required
+                  className="block w-full rounded-md border-0 p-1.5 text-white shadow-sm ring-1 ring-inset ring-gray-200 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-white sm:text-sm sm:leading-6"
+                />
+              </div>
             </div>
-            <div className="mb-4">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-300"
+
+            <div>
+              <div className="flex items-center justify-between">
+                <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-500">
+                  Password
+                </label>
+                <div className="text-sm">
+                  <a href="#" className="font-semibold text-white hover:text-primary/90">
+                    Forgot password?
+                  </a>
+                </div>
+              </div>
+              <div className="mt-2">
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  placeholder='enter your password'
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="block w-full rounded-md border-0 p-1.5 text-white shadow-sm ring-1 ring-inset ring-gray-200 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-white sm:text-sm sm:leading-6"
+                />
+              </div>
+            </div>
+
+            <div className='flex justify-center'>
+              <Button
+                type="submit"
+                className='w-full'
               >
-                Password:
-              </label>
-              <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 p-2 w-full bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-              />
+                Sign in
+              </Button>
             </div>
-            {/* Display error message */}
-            {error && (
-                    <p className="text-red-500 text-sm mb-4">{error}</p>
-                )}
-            <button
-              type="submit"
-              className="bg-gray-700 hover:bg-gray-800 text-white p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-blue-700 focus:ring-white"
-            >
-              Sign In
-            </button>
           </form>
         </div>
+      </div>
+    </>
       );
     };
 
