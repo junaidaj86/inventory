@@ -32,9 +32,9 @@ export const SuppliersClient: React.FC<SuppliersClientProps> = ({
       </div>
       <Separator />
       <DataTable searchKey="name" columns={columns} data={data} />
-      <Heading title="API" description="API Calls for Suppliers" />
+      {/* <Heading title="API" description="API Calls for Suppliers" />
       <Separator />
-      <ApiList entityName="suppliers" entityIdName="supplierId" />
+      <ApiList entityName="suppliers" entityIdName="supplierId" /> */}
     </>
   );
 };
