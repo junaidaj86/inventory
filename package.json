@@ -41,6 +41,7 @@
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
     "lucide-react": "^0.244.0",
+    "mysql2": "^3.10.1",
     "next": "13.4.5",
     "next-auth": "^4.22.3",
     "next-cloudinary": "^4.12.0",
